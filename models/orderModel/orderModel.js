@@ -33,8 +33,8 @@ const orderSchemaDefinition = {
   },
   paymentType: {
     type: String,
-    enum: ["cod", "card"],
-    default: "cod",
+    enum: ["COD", "Card"],
+    default: "COD",
   },
   shippingDetails: {
     orderedBy: {

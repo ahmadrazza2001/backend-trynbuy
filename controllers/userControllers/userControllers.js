@@ -126,7 +126,7 @@ exports.vendorOrders = catchAsyncError(async (req, res, next) => {
   const productIds = products.map((product) => product._id);
   const orders = await Order.find({ productId: { $in: productIds } }).populate(
     "userId",
-    "username email"
+    "firstName lastName email phone"
   );
 
   if (!orders.length) {
@@ -144,12 +144,44 @@ exports.vendorOrders = catchAsyncError(async (req, res, next) => {
       productTitle: order.orderProductTitle,
       quantity: order.orderProductQuantity,
       orderStatus: order.orderStatus,
+      paymentType: order.paymentType,
       customer: {
         id: order.userId._id,
+        firstName: order.userId.firstName,
+        lastName: order.userId.lastName,
         username: order.userId.username,
         email: order.userId.email,
+        phone: order.userId.phone,
       },
       shippingDetails: order.shippingDetails,
     })),
   });
+});
+
+exports.completeOrder = catchAsyncError(async (req, res, next) => {
+  const id = req.params.id;
+  try {
+    let order = await Order.findById(id);
+    if (!order) {
+      return next(new ErrorHandler("Order not found", 404));
+    }
+    if (order.orderStatus !== "pending") {
+      return next(new ErrorHandler("Order is not in a pending state", 400));
+    }
+    order.orderStatus = "completed";
+    let saved = await order.save();
+
+    if (!saved) {
+      return next(new ErrorHandler("Error completing the order", 400));
+    }
+
+    return res.status(200).json({
+      status: "success",
+      message: "Order updated successfully",
+    });
+  } catch (error) {
+    return next(
+      new ErrorHandler(error.message, error.statusCode || error.code)
+    );
+  }
 });

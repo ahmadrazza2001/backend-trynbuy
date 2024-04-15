@@ -10,8 +10,9 @@ userRouter.route("/myOrders").get(verifyAuth, userRoutes.myOrders);
 userRouter
   .route("/requestForVendor")
   .post(verifyAuth, userRoutes.requestForVendor);
+userRouter.route("/vendorOrders").get(verifyAuth, userRoutes.vendorOrders);
 userRouter
-  .route("/vendorOrders")
-  .get(verifyAuth, isVendor, userRoutes.vendorOrders);
+  .route("/completeOrder/:id")
+  .patch(verifyAuth, userRoutes.completeOrder);
 
 module.exports = userRouter;
