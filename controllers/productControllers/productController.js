@@ -6,13 +6,14 @@ const mongoose = require("mongoose");
 
 //create product
 exports.createProduct = catchAsyncError(async (req, res, next) => {
-  const { title, description, keywords, images, arImage, productType } =
+  const { title, description, price, keywords, images, arImage, productType } =
     req.body;
   try {
     const newProduct = new Product({
       userId: req.userData.user.id,
       title,
       description,
+      price,
       keywords,
       images,
       arImage,
@@ -49,6 +50,7 @@ exports.updateProduct = catchAsyncError(async (req, res, next) => {
   const {
     title,
     description,
+    price,
     keywords,
     images,
     arImage,
@@ -67,6 +69,7 @@ exports.updateProduct = catchAsyncError(async (req, res, next) => {
     }
     product.title = title;
     product.description = description;
+    product.price = price;
     product.keywords = keywords;
     product.images = images;
     product.arImage = arImage;

@@ -35,6 +35,10 @@ const modal = {
     type: String,
     require: true,
   },
+  price: {
+    type: String,
+    require: true,
+  },
   quantity: {
     type: Number,
     default: 20,
