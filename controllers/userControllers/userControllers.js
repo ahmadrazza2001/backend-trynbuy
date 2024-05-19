@@ -26,10 +26,11 @@ exports.myProfile = catchAsyncError(async (req, res, next) => {
     },
   });
 });
+
 exports.newOrder = catchAsyncError(async (req, res, next) => {
   const { id: productId } = req.params;
   const userId = req.userData.user.id;
-  console.log(req.headers);
+  // console.log(req.headers);
   const { orderedBy, email, address, city, phone } = req.body.shippingDetails;
 
   if (!orderedBy || !email || !address || !city || !phone) {
@@ -46,6 +47,8 @@ exports.newOrder = catchAsyncError(async (req, res, next) => {
     productId,
     orderProductTitle: product.title,
     orderProductDescription: product.description,
+    orderProductPrice: product.price,
+    orderProductQuantity: product.quantity,
     shippingDetails: {
       orderedBy,
       email,
@@ -92,6 +95,7 @@ exports.myOrders = catchAsyncError(async (req, res, next) => {
     orders: userWithOrders.myOrders,
   });
 });
+
 exports.requestForVendor = catchAsyncError(async (req, res, next) => {
   const userId = req.userData.user.id;
   const updatedUser = await User.findByIdAndUpdate(
@@ -112,6 +116,7 @@ exports.requestForVendor = catchAsyncError(async (req, res, next) => {
     },
   });
 });
+
 exports.vendorOrders = catchAsyncError(async (req, res, next) => {
   const vendorId = req.userData.user.id;
   const products = await Product.find({ userId: vendorId });

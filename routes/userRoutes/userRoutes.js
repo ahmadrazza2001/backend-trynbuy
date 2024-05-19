@@ -8,11 +8,11 @@ userRouter.route("/myProfile").get(verifyAuth, userRoutes.myProfile);
 userRouter.route("/newOrder/:id").post(verifyAuth, userRoutes.newOrder);
 userRouter.route("/myOrders").get(verifyAuth, userRoutes.myOrders);
 userRouter
-  .route("/requestForVendor")
+  .route("/requestVendor")
   .post(verifyAuth, userRoutes.requestForVendor);
 userRouter.route("/vendorOrders").get(verifyAuth, userRoutes.vendorOrders);
 userRouter
   .route("/completeOrder/:id")
-  .patch(verifyAuth, userRoutes.completeOrder);
+  .post(verifyAuth, userRoutes.completeOrder);
 
 module.exports = userRouter;

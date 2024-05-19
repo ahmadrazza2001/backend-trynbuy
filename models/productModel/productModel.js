@@ -41,7 +41,7 @@ const modal = {
   },
   quantity: {
     type: Number,
-    default: 20,
+    default: 1,
   },
   createdAt: {
     type: Date,

@@ -1,8 +1,6 @@
 const User = require("../../models/userModel/userModel");
 const ErrorHandler = require("../../config/ErrorHandler");
 const catchAsyncErrors = require("../../config/catchAsyncErrors");
-const { compare } = require("bcrypt");
-const generateJwt = require("../../utils/generateJwt");
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -25,7 +23,7 @@ exports.signupController = catchAsyncErrors(async (req, res, next) => {
       password,
     });
     await newUser.save();
-    return res.status(200).json({
+    return res.status(201).json({
       status: "success",
       message: "Account created successfully",
       user: {

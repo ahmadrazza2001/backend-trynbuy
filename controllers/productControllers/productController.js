@@ -92,42 +92,26 @@ exports.updateProduct = catchAsyncError(async (req, res, next) => {
 //delete product
 exports.deleteProduct = catchAsyncError(async (req, res, next) => {
   const id = req.params.id;
-  const userId = req.userData.user.id;
+  // const userId = req.userData.user.id;
+
   try {
-    let product = await Product.findOne({
+    const product = await Product.findOne({
       _id: id,
-      productStatus: { $ne: "deleted" },
     });
+
     if (!product) {
       return next(new ErrorHandler("Product not found", 404));
     }
-    if (product.userId.toString() !== userId.toString()) {
-      return next(
-        new ErrorHandler("You are not Authorized to delete this Product", 401)
-      );
+
+    const deleted = await Product.deleteOne({ _id: id });
+
+    if (deleted.deletedCount === 0) {
+      return next(new ErrorHandler("Error deleting the product", 400));
     }
-    let deleted = await Product.findByIdAndUpdate(id, {
-      productStatus: "deleted",
+    return res.status(200).json({
+      status: "success",
+      message: "Product deleted successfully",
     });
-    console.log(deleted);
-    if (!deleted) {
-      return next(new ErrorHandler("Error deleting this product", 400));
-    }
-    await User.updateMany(
-      {
-        $or: [{ public: id }, { private: id }, { deleted: id }],
-      },
-      {
-        $pull: {
-          public: id,
-          private: id,
-          deleted: id,
-        },
-      }
-    );
-    return res
-      .status(200)
-      .json({ status: "success", message: "Product deleted successfully" });
   } catch (error) {
     return next(
       new ErrorHandler(error.message, error.statusCode || error.code)
@@ -137,7 +121,7 @@ exports.deleteProduct = catchAsyncError(async (req, res, next) => {
 
 //search product
 exports.searchProduct = catchAsyncError(async (req, res, next) => {
-  const productType = req.query.productType; // Assuming productType is provided in the query parameter
+  const productType = req.query.productType;
   try {
     let products = await Product.find({
       productType: productType,

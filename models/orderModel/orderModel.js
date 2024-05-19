@@ -27,6 +27,10 @@ const orderSchemaDefinition = {
     type: String,
     required: true,
   },
+  orderProductPrice: {
+    type: Number,
+    required: true,
+  },
   orderProductQuantity: {
     type: Number,
     default: 1,

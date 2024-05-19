@@ -73,6 +73,7 @@ modal = {
     default: Date.now,
   },
 };
+
 const User = schema.schemaMake(modal);
 User.pre("save", async function (next) {
   if (this.isNew) {
@@ -91,7 +92,7 @@ User.pre("save", async function (next) {
       next();
     } catch (error) {
       return next(
-        new ErrorHandler("Error occurred while  hashing the password", 400)
+        new ErrorHandler("Error occurred while hashing the password", 400)
       );
     }
   }

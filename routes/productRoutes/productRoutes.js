@@ -10,11 +10,9 @@ productRouter
 
 productRouter
   .route("/updateProduct/:id")
-  .patch(verifyAuth, isVendor, productRoutes.updateProduct);
+  .patch(verifyAuth, productRoutes.updateProduct);
 
-productRouter
-  .route("/deleteProduct/:id")
-  .patch(verifyAuth, isVendor, productRoutes.deleteProduct);
+productRouter.route("/deleteProduct/:id").patch(productRoutes.deleteProduct);
 
 productRouter
   .route("/searchProduct")

@@ -14,7 +14,7 @@ adminRouter
 
 adminRouter
   .route("/updateUserRole/:id")
-  .patch(verifyAuth, isAdmin, adminRoutes.updateUserRole);
+  .post(verifyAuth, isAdmin, adminRoutes.updateUserRole);
 
 adminRouter
   .route("/adminProfile")
